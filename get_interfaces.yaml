@@ -4,9 +4,9 @@
   collections:
     - fortinet.fortimanager
   tasks:
-   - name: retrieve all the interfaces
-     fmgr_fact:
-       facts:
-           selector: 'system_interface'
-           params:
-               interface: ''
+    - name: retrieve all the interfaces
+      fmgr_fact:
+        facts:
+            selector: 'system_interface'
+            params:
+                interface: ''
