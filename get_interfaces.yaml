@@ -1,4 +1,12 @@
-- name: gathering fortimanager interfaces
+- name: gathering fortimanager facts
+  hosts: all
+  gather_facts: no
+  connection: httpapi
+  collections:
+    - fortinet.fortimanager
+  vars:
+    ansible_httpapi_use_ssl: True
+    ansible_httpapi_validate_certs: False
   tasks:
    - name: retrieve all the interfaces
      fmgr_fact:
