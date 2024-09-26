@@ -1,0 +1,7 @@
+  tasks:
+   - name: retrieve all the interfaces
+     fmgr_fact:
+       facts:
+           selector: 'system_interface'
+           params:
+               interface: ''
