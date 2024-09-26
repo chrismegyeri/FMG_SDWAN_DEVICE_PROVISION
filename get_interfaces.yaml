@@ -6,7 +6,7 @@
     - fortinet.fortimanager
   tasks:
     - name: Retrive all the interfaces
-      fortinet.fortimanager.fmgr_fact:
+      fmgr_fact:
         facts:
           selector: "system_interface"
           params:
