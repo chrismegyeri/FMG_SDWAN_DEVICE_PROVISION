@@ -1,3 +1,4 @@
+- name: gathering fortimanager interfaces
   tasks:
    - name: retrieve all the interfaces
      fmgr_fact:
