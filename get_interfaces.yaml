@@ -1,7 +1,10 @@
-- name: Gathering fortimanager facts
+- name: Interface configuration
   hosts: all
   gather_facts: false
   connection: httpapi
+  collections:
+    - fortinet.fortimanager
+  tasks:
     - name: Retrive all the interfaces
       fortinet.fortimanager.fmgr_fact:
         facts:
