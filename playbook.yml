@@ -1,0 +1,22 @@
+---
+- name: Provision SD-WAN Device
+  hosts: all
+  gather_facts: false
+  connection: httpapi
+  tasks:
+    - name: Add Model Device
+      ansible.builtin.import_tasks: playbooks/add_model_device.yml
+    - name: Map variables to Model device
+      ansible.builtin.import_tasks: playbooks/map_device_variables.yml
+
+
+# Additional common
+- name: Install Device and Policy Changes to Model Device
+  hosts: all
+  gather_facts: false
+  connection: httpapi
+  tasks:
+    - name: Install Device Configuration
+      ansible.builtin.import_tasks: playbooks/common/fmg/fmgr_securityconsole/install_device.yml
+    - name: Install Policy Package to Device
+      ansible.builtin.import_tasks: playbooks/common/fmg/fmgr_securityconsole/install_policy_package.yml

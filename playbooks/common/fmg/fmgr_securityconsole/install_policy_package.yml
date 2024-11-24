@@ -1,0 +1,31 @@
+# This playbook will install a single policy package to a single device and confirm that the installation has been commpleted successfully
+# Variables required are the following:
+# adom = The administration domain of the device and policy package you will be installing into
+# policy_package = the policy package on Fortimanager you wish to install to a target device, folders shoud be prefaced with foldername/policyname
+# hostname = device name allocated within FortiManager
+#
+
+- name: Copy and install a policy package to device.
+  fmgr_securityconsole_install_package:
+    bypass_validation: True
+    securityconsole_install_package:
+      adom: "{{ adom }}"
+      pkg: "{{ policy_package }}"
+      flags:
+        - none
+      scope:
+        - name: "{{ host_name }}"
+          vdom: "root"
+  register: policy_install_task
+
+- name: Watch Policy install Task Status
+  fmgr_fact:
+    facts:
+      selector: "task_task"
+      params:
+        task: "{{policy_install_task.meta.response_data.task}}"
+  register: taskinfo_policy
+  until: taskinfo.meta.response_data.percent == 100
+  retries: 30
+  delay: 5
+  failed_when: taskinfo_policy.meta.response_data.state == 'error'

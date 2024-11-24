@@ -1,0 +1,19 @@
+# This playbook will create a model Fortigate device within FortiManager using a device blueprint
+# Variables required are the following:
+# adom = The administration domain of the device will be created in
+# host_name = the device name within FortiManager, this will also be utilised for the Hostname
+# serial_number = The serial number of the device being linked to the model device.
+# site_type = The name of the device blueprint to be utilised
+
+tasks:
+  - name: Map Device Variables for Blueprint
+    fortinet.fortimanager.fmgr_fmg_variable_dynamicmapping:
+      adom: "{{ adom }}"
+      state: "present"
+      variable: "{{ item.key }}"
+      fmg_variable_dynamicmapping:
+        _scope:
+          - name: "{{ host_name }}"
+            vdom: "global"
+        value: "{{ item.value }}"
+    loop: "{{ lookup('dict', mapped_device_vars) }}"

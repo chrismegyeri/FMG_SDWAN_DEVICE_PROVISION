@@ -1,0 +1,23 @@
+# This playbook will create a model Fortigate device within FortiManager using a device blueprint
+# Variables required are the following:
+# adom = The administration domain of the device will be created in
+# host_name = the device name within FortiManager, this will also be utilised for the Hostname
+# serial_number = The serial number of the device being linked to the model device.
+# site_type = The name of the device blueprint to be utilised
+
+tasks:
+  - name: Add a device to the Device Manager database.
+    fortinet.fortimanager.fmgr_dvm_cmd_add_device:
+      rc_succeeded: "-20002"
+      bypass_validation: False
+      dvm_cmd_add_device:
+          adom: "{{ adom }}"
+          device:
+            device_action: add_model
+            mgmt_mode: fmg
+            os_ver: 7.0
+            mr: 2
+            name: "{{ host_name }}"
+            sn: "{{ serial_number }}"
+            device_blueprint: "{{ site_type }}"
+

@@ -1,0 +1,10 @@
+[fortimanagers]
+fortimanager01 ansible_host=<deviceIP> ansible_user="admin" ansible_password="admin"
+
+[fortimanagers:vars]
+ansible_network_os=fortinet.fortimanager.fortimanager
+
+[all:vars]
+ansible_connection=httpapi
+ansible_httpapi_validate_certs=no
+ansible_httpapi_use_ssl=yes

@@ -1,0 +1,29 @@
+# This playbook will install pending device configuration including template configuration to a single device and confirm that the installation has been commpleted successfully
+# Variables required are the following:
+# adom = The administration domain of the device and policy package you will be installing into
+# hostname = device name allocated within FortiManager
+#
+  tasks:
+    - name: Invoke install Device Tasks
+      fmgr_securityconsole_install_device:
+          bypass_validation: True
+          securityconsole_install_device:
+            adom: '{{adom}}'
+            flags: none
+            dev_rev_comments: "automated device installation"
+            scope:
+              - name: "{{ host_name }}"
+                vdom: "root"
+      register: installing_task
+
+    - name: Watch install Task Status
+      fmgr_fact:
+          facts:
+            selector: 'task_task'
+            params:
+              task: '{{installing_task.meta.response_data.task}}'
+      register: taskinfo
+      until: taskinfo.meta.response_data.percent == 100
+      retries: 30
+      delay: 3
+      failed_when: taskinfo.meta.response_data.state == 'error'
